@@ -3,6 +3,7 @@ const dodgeButton = document.querySelector('#dodge-button');
 const growButton = document.querySelector('#grow-button');
 let dodgeCount = 0;
 let buttonScale = 1;
+let isFirstDodge = true;
 
 // Custom cursor setup
 const cursor = document.createElement('img');
@@ -62,7 +63,13 @@ dodgeButton.addEventListener('mouseenter', () => {
   const { x, y } = getRandomPosition();
   dodgeButton.style.left = `${x}px`;
   dodgeButton.style.top = `${y}px`;
-  growTheButton();
+  
+  // Don't grow on first dodge
+  if (!isFirstDodge) {
+    growTheButton();
+  } else {
+    isFirstDodge = false;
+  }
   
   // Change cursor to angry momentarily
   cursor.src = '/images/angry.png';
@@ -70,6 +77,48 @@ dodgeButton.addEventListener('mouseenter', () => {
     cursor.src = '/images/happy.png';
   }, 500);
 });
+
+// Touch support for mobile
+let touchStartTime = 0;
+dodgeButton.addEventListener('touchstart', (e) => {
+  touchStartTime = Date.now();
+  // Prevent the button from dodging immediately on first touch
+  if (!dodgeButton.classList.contains('dodging')) {
+    return;
+  }
+  
+  e.preventDefault();
+  dodgeButton.classList.add('dodging');
+  const { x, y } = getRandomPosition();
+  dodgeButton.style.left = `${x}px`;
+  dodgeButton.style.top = `${y}px`;
+  
+  // Don't grow on first dodge
+  if (!isFirstDodge) {
+    growTheButton();
+  } else {
+    isFirstDodge = false;
+  }
+}, { passive: false });
+
+// Allow clicking after dodge starts
+dodgeButton.addEventListener('touchend', (e) => {
+  const touchDuration = Date.now() - touchStartTime;
+  if (!dodgeButton.classList.contains('dodging')) {
+    // First touch - start the game
+    dodgeButton.classList.add('dodging');
+    const { x, y } = getRandomPosition();
+    dodgeButton.style.left = `${x}px`;
+    dodgeButton.style.top = `${y}px`;
+    
+    // Don't grow on first dodge
+    if (!isFirstDodge) {
+      growTheButton();
+    } else {
+      isFirstDodge = false;
+    }
+  }
+}, { passive: false });
 
 dodgeButton.addEventListener('click', () => {
   alert('You caught me! 🎉');

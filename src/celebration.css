@@ -20,6 +20,17 @@ body {
   min-width: 320px;
   min-height: 100vh;
   overflow: hidden;
+  cursor: none;
+}
+
+.custom-cursor {
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.1s;
 }
 
 #celebration {
@@ -53,7 +64,7 @@ button {
   font-family: inherit;
   background-color: #42b883;
   color: white;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.3s;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
@@ -61,6 +72,41 @@ button {
 button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Hide custom cursor on mobile */
+@media (hover: none) and (pointer: coarse) {
+  .custom-cursor {
+    display: none;
+  }
+  
+  body {
+    cursor: auto;
+  }
+  
+  button {
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.5em;
+  }
+  
+  .message {
+    font-size: 1.2em;
+  }
+  
+  button {
+    padding: 0.8em 2em;
+    font-size: 1.1em;
+    min-height: 44px;
+  }
+  
+  #celebration {
+    padding: 1rem;
+  }
 }
 
 .confetti-container {
