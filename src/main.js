@@ -128,7 +128,7 @@ dodgeButton.addEventListener('click', () => {
 });
 
 growButton.addEventListener('click', () => {
-  window.location.href = '/public/celebration.html';
+  window.location.href = '/celebration.html';
 });
 
 console.log('Vite is running!');
